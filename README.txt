@@ -1,13 +1,17 @@
-Computer Directory Console v0.4 SD-first image-rendering fix
+Computer Directory Console v0.4 SD-Streamed firmware
 
-This keeps the v0.4 SD-first firmware and replaces only drawAvatar().
-The old renderer alternated SD reads and TFT drawPixel calls tens of thousands of times.
-The new renderer reads one BMP row at a time and sends the row to the TFT in one operation.
+Flash:
+  firmware/DirectoryConsole/DirectoryConsole.ino
 
-Expected portrait format:
-- BMP
-- 120 x 120 recommended
-- 24-bit RGB
-- uncompressed
+Keeps v0.4 behavior but changes the directory architecture:
+- microSD is the primary database
+- up to 128 records indexed with only 512 bytes of record offsets
+- one computer record is read from SD when needed
+- portraits are streamed one row at a time
+- microSD init retries 5 times
+- built-in five PCs are fallback only
 
-Serial Monitor: 115200 baud. If a row cannot be read, the firmware prints the exact failed row.
+Expected SD wiring:
+CS=13, SCK=18, MISO=19, MOSI=23
+
+Serial Monitor: 115200 baud
