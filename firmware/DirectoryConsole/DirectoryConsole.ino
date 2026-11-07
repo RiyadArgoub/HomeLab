@@ -45,7 +45,7 @@
 const bool INVERT_X = false;
 const bool INVERT_Y = false;
 const int JOY_THRESHOLD = 1050;
-const char* TEST_PASSWORD = "1912"; // PUBLIC TEST VALUE ONLY, NOT SECURITY.
+const char* TEST_PASSWORD = "1234"; // PUBLIC TEST VALUE ONLY, NOT SECURITY.
 const char* SERVICE_UUID = "f23a0001-6cf8-4c4c-a3f2-120c95e7ca13";
 const char* RX_UUID = "f23a0002-6cf8-4c4c-a3f2-120c95e7ca13";
 const char* TX_UUID = "f23a0003-6cf8-4c4c-a3f2-120c95e7ca13";
@@ -115,10 +115,13 @@ String fieldAt(const String& line,int index){
   if(end<0)end=line.length();
   return line.substring(start,end);
 }
-void loadCsv(){
-  if(!sdReady)return;
+bool loadCsv(){
+  if(!sdReady)return false;
   File f=SD.open("/computers.csv",FILE_READ);
-  if(!f){Serial.println("No computers.csv, using defaults");return;}
+  if(!f){
+    Serial.println("SD OK, but /computers.csv is missing");
+    return false;
+  }
   int i=0;
   while(f.available() && i<MAX_PC){
     String line=f.readStringUntil('\n');line.trim();
@@ -132,7 +135,37 @@ void loadCsv(){
     computers[i].notes=fieldAt(line,6);
     if(computers[i].name.length())i++;
   }
-  f.close();if(i>0)countPC=i;
+  f.close();
+  if(i==0){
+    Serial.println("/computers.csv opened, but no valid records were found");
+    return false;
+  }
+  countPC=i;
+  Serial.printf("Loaded %d computer(s) from microSD\n", countPC);
+  return true;
+}
+
+void printSdDiagnostics(){
+  if(!sdReady)return;
+  uint8_t type=SD.cardType();
+  Serial.print("microSD mounted. Type: ");
+  if(type==CARD_MMC)Serial.println("MMC");
+  else if(type==CARD_SD)Serial.println("SDSC");
+  else if(type==CARD_SDHC)Serial.println("SDHC/SDXC");
+  else Serial.println("UNKNOWN");
+  Serial.printf("Card size: %llu MB\n", SD.cardSize()/(1024ULL*1024ULL));
+  File root=SD.open("/");
+  if(root){
+    Serial.println("microSD root contents:");
+    File file=root.openNextFile();
+    if(!file)Serial.println("  <empty>");
+    while(file){
+      Serial.print("  /"); Serial.println(file.name());
+      file.close();
+      file=root.openNextFile();
+    }
+    root.close();
+  }
 }
 void saveCsv(){
   if(!sdReady)return;
@@ -149,26 +182,88 @@ void saveCsv(){
 uint16_t bmp16(File &f){uint16_t a=f.read();return a|(f.read()<<8);}
 uint32_t bmp32(File &f){uint32_t v=0;for(int i=0;i<4;i++)v|=((uint32_t)f.read())<<(i*8);return v;}
 void drawAvatar(String filename,int x,int y){
-  if(!sdReady){tft.fillRoundRect(x,y,120,120,8,ST77XX_MAGENTA);return;}
-  File bmp=SD.open("/"+filename,FILE_READ);
-  if(!bmp){tft.fillRoundRect(x,y,120,120,8,ST77XX_MAGENTA);return;}
-  if(bmp16(bmp)!=0x4D42){bmp.close();return;}
-  (void)bmp32(bmp); (void)bmp32(bmp); uint32_t offset=bmp32(bmp);
-  (void)bmp32(bmp); int32_t w=(int32_t)bmp32(bmp),h=(int32_t)bmp32(bmp);
-  uint16_t planes=bmp16(bmp),depth=bmp16(bmp);
-  uint32_t compression=bmp32(bmp);
-  if(w<=0 || h==0 || w>240 || h>240 || depth!=24 || planes!=1 || compression!=0){bmp.close();return;}
-  bool bottomUp=h>0;if(h<0)h=-h;
-  uint32_t rowSize=(w*3+3)&~3U;
-  int limitW=min((int)w,120),limitH=min((int)h,120);
-  for(int row=0;row<limitH;row++){
-    int sourceY=bottomUp?h-1-row:row;
-    bmp.seek(offset+(uint32_t)sourceY*rowSize);
-    for(int col=0;col<limitW;col++){
-      uint8_t b=bmp.read(),g=bmp.read(),r=bmp.read();
-      tft.drawPixel(x+col,y+row,tft.color565(r,g,b));
-    }
+  // Fast, low-RAM BMP renderer for the shared SD/TFT SPI bus.
+  // Reads one row from SD at a time, then writes that entire row to the TFT.
+  // Temporary RAM use is only ~600 bytes for a 120-pixel-wide image.
+  if(!sdReady){
+    tft.fillRoundRect(x,y,120,120,8,ST77XX_MAGENTA);
+    Serial.println("Avatar skipped: SD not ready");
+    return;
   }
+
+  File bmp=SD.open("/"+filename,FILE_READ);
+  if(!bmp){
+    tft.fillRoundRect(x,y,120,120,8,ST77XX_MAGENTA);
+    Serial.println("Avatar open failed: /"+filename);
+    return;
+  }
+
+  if(bmp16(bmp)!=0x4D42){
+    Serial.println("Avatar is not a BMP: "+filename);
+    bmp.close();
+    return;
+  }
+
+  (void)bmp32(bmp);              // file size
+  (void)bmp32(bmp);              // reserved
+  uint32_t offset=bmp32(bmp);    // pixel-data offset
+  (void)bmp32(bmp);              // DIB header size
+  int32_t w=(int32_t)bmp32(bmp);
+  int32_t h=(int32_t)bmp32(bmp);
+  uint16_t planes=bmp16(bmp);
+  uint16_t depth=bmp16(bmp);
+  uint32_t compression=bmp32(bmp);
+
+  if(w<=0 || h==0 || w>240 || abs(h)>240 || depth!=24 || planes!=1 || compression!=0){
+    Serial.printf("Unsupported BMP %s: %ldx%ld, %u bpp, comp=%lu\n",
+                  filename.c_str(),(long)w,(long)h,depth,(unsigned long)compression);
+    bmp.close();
+    return;
+  }
+
+  bool bottomUp=(h>0);
+  if(h<0)h=-h;
+
+  const uint32_t rowSize=(w*3+3)&~3U;
+  const int limitW=min((int)w,120);
+  const int limitH=min((int)h,120);
+
+  // Maximum portrait width is 120 pixels.
+  uint8_t rgbRow[120*3];
+  uint16_t pixelRow[120];
+
+  for(int row=0;row<limitH;row++){
+    const int sourceY=bottomUp ? (h-1-row) : row;
+    const uint32_t pos=offset+(uint32_t)sourceY*rowSize;
+
+    if(!bmp.seek(pos)){
+      Serial.printf("BMP seek failed at row %d (%s)\n",row,filename.c_str());
+      break;
+    }
+
+    const size_t want=(size_t)limitW*3;
+    const size_t got=bmp.read(rgbRow,want);
+    if(got!=want){
+      Serial.printf("BMP short read at row %d: got %u/%u bytes (%s)\n",
+                    row,(unsigned)got,(unsigned)want,filename.c_str());
+      break;
+    }
+
+    for(int col=0;col<limitW;col++){
+      const int p=col*3;
+      const uint8_t b=rgbRow[p+0];
+      const uint8_t g=rgbRow[p+1];
+      const uint8_t r=rgbRow[p+2];
+      pixelRow[col]=tft.color565(r,g,b);
+    }
+
+    // One TFT transaction per row instead of one transaction per pixel.
+    tft.drawRGBBitmap(x,y+row,pixelRow,limitW,1);
+
+    // Give the ESP32 scheduler/watchdog a chance during long draws.
+    if((row & 7)==7)yield();
+  }
+
   bmp.close();
 }
 
@@ -188,8 +283,14 @@ void draw(){
     tft.setTextSize(1);tft.setCursor(8,34);
     tft.setTextColor(bleConnected?ST77XX_GREEN:ST77XX_YELLOW);
     tft.print(bleConnected?"BLE manager connected":"BLE offline / cached directory");
-    for(int i=0;i<countPC && i<9;i++){
-      int y=55+i*26;
+    const int visibleRows=9;
+    int firstVisible=selected-visibleRows/2;
+    if(firstVisible<0)firstVisible=0;
+    if(firstVisible>countPC-visibleRows)firstVisible=max(0,countPC-visibleRows);
+    for(int row=0;row<visibleRows;row++){
+      int i=firstVisible+row;
+      if(i>=countPC)break;
+      int y=55+row*26;
       if(i==selected)tft.fillRoundRect(5,y,230,24,4,tft.color565(42,69,86));
       tft.setTextSize(1);tft.setTextColor(ST77XX_WHITE);
       tft.setCursor(11,y+8);tft.print(i==selected?"> ":"  ");tft.print(computers[i].name.substring(0,17));
@@ -434,11 +535,24 @@ void setup(){
   SPI.begin(SPI_CLK,SPI_MISO,SPI_MOSI);
   tft.init(240,320);tft.setRotation(0);
   tft.fillScreen(ST77XX_BLACK);
-  defaults();
+  // microSD is the PRIMARY directory source in this v0.4 patch.
+  // The five built-in demo PCs are used only if the card cannot be mounted
+  // or /computers.csv cannot be read.
+  countPC=0;
   digitalWrite(TFT_CS,HIGH);
   sdReady=SD.begin(SD_CS,SPI,4000000);
-  if(sdReady)loadCsv();
-  else Serial.println("SD init failed - fallback to sample directory, no BMP images");
+  bool loadedFromSd=false;
+  if(sdReady){
+    printSdDiagnostics();
+    loadedFromSd=loadCsv();
+  }else{
+    Serial.println("microSD INIT FAILED on CS GPIO13");
+    Serial.println("Check: CS=13, SCK=18, MISO=19, MOSI=23, common GND, and module power.");
+  }
+  if(!loadedFromSd){
+    Serial.println("Using built-in 5-PC fallback directory");
+    defaults();
+  }
   // Calibrate joystick center while untouched.
   analogReadResolution(12);
   long sx=0,sy=0;
