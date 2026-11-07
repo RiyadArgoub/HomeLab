@@ -2,6 +2,12 @@
 
 **Prototype v0.5 (128-PC directory, streamed microSD images, GUI export workflow; includes v0.3 5 V battery-bay revision)** · ESP32 + ST7789V 240×320 + 16×2 I²C LCD + joystick + 4 square buttons + piezo + microSD + Bluetooth LE + Python desktop GUI.
 
+## Soldering and circuits showcase
+
+<img width="591" height="1280" alt="pic1" src="https://github.com/user-attachments/assets/ea74b45e-cd78-4293-b3aa-cf7a78feaff1" />
+<img width="720" height="1280" alt="pic2" src="https://github.com/user-attachments/assets/d667aafe-3623-44ba-abc6-c600a5245ebf" />
+<img width="591" height="1280" alt="pic3" src="https://github.com/user-attachments/assets/7c18068e-c753-4c18-bfc7-7be0fddd1924" />
+
 ## Current v0.5: 128-PC directory + streamed microSD images
 
 The current revision supports **up to 128 computer records** in the ESP32 firmware, desktop GUI, and microSD exporter. The repository ships with **17 neutral demo records**, all using the same generic non-human placeholder image. The TFT shows a 9-row scrolling window rather than storing all images in RAM, and batch GUI sync writes `computers.csv` once per transfer. See [`README_128PC_UPGRADE.md`](README_128PC_UPGRADE.md) for the upgrade notes.
