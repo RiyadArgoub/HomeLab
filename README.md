@@ -174,10 +174,6 @@ Computer_Directory_Console_v1/
 └── tests/test_project.py
 ```
 
-## Placeholder assets
-
-The character-based computer names, roles, example addresses, and descriptions are placeholder/demo content used for testing the interface. Only a generic non-human placeholder image is bundled. Replace network values before real deployment. Do not commit real MAC addresses, SSH usernames, private keys, passwords, or security tokens. No license is implicitly granted by this bundle; add an appropriate license before public distribution.
-
 ## Build milestone order
 
 1. Prove TFT and 1602 I²C LCD independently (including I²C voltage safety).
@@ -188,5 +184,3 @@ The character-based computer names, roles, example addresses, and descriptions a
 6. Configure harmless TCP status probes and a single test Wake-on-LAN target.
 7. Configure a noncritical lab host for SSH shutdown; test only with authorization and GUI confirmation.
 8. Measure exact board/switch dimensions; print first-fit front/rear enclosure, correct CAD as required, then solder and mount.
-
-> **No hardware has been remotely powered, shut down or physically tested by this build package.**
