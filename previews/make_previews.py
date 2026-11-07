@@ -20,14 +20,14 @@ for x in (8,134):
 cx,cy=p(71,166);ww,hh=36*S,44*S
 box=[int(cx-ww/2),int(cy-hh/2),int(cx+ww/2),int(cy+hh/2)]
 d.rounded_rectangle([box[0]-8,box[1]-8,box[2]+8,box[3]+8],radius=8,fill=(12,14,24))
-photo=Image.open(ROOT/'assets/avatars/heather.png').convert('RGB').resize((ww,hh))
+photo=Image.open(ROOT/'assets/avatars/zoey.png').convert('RGB').resize((ww,hh))
 im.paste(photo,(box[0],box[1]));d.rectangle(box,outline=(118,207,204),width=3)
 # 1602 character display
 cx,cy=p(71,118);ww,hh=66*S,17*S
 rect=(int(cx-ww/2),int(cy-hh/2),int(cx+ww/2),int(cy+hh/2))
 d.rounded_rectangle(rect,radius=8,fill=(24,87,99),outline=(122,184,178),width=3)
-d.text((rect[0]+8,rect[1]+10),'HEATHER-PC1',font=font(18,True),fill=(225,247,234))
-d.text((rect[0]+8,rect[1]+36),'AI  ONLINE',font=font(16),fill=(225,247,234))
+d.text((rect[0]+8,rect[1]+10),'ZOEY-PC3',font=font(18,True),fill=(225,247,234))
+d.text((rect[0]+8,rect[1]+36),'SERVER  ONLINE',font=font(16),fill=(225,247,234))
 # joystick
 cx,cy=p(39,79)
 d.ellipse((cx-42,cy-42,cx+42,cy+42),fill=(26,29,36),outline=(110,131,147),width=4)
@@ -52,15 +52,15 @@ im.save(OUT/'enclosure_front_preview.png')
 img=Image.new('RGB',(240,320),(9,14,22));q=ImageDraw.Draw(img)
 q.rectangle((0,0,240,30),fill=(18,53,68))
 q.text((10,7),'COMPUTER INFO',font=font(17,True),fill='white')
-ph=Image.open(ROOT/'assets/avatars/heather.png').convert('RGB').resize((120,120))
+ph=Image.open(ROOT/'assets/avatars/zoey.png').convert('RGB').resize((120,120))
 img.paste(ph,(60,38))
-q.text((12,172),'Heather-PC1',font=font(17,True),fill='white')
-q.text((12,203),'ROLE: AI',font=font(12),fill=(161,211,225))
+q.text((12,172),'Zoey-PC3',font=font(17,True),fill='white')
+q.text((12,203),'ROLE: SERVER',font=font(12),fill=(161,211,225))
 q.text((12,224),'STATUS: ONLINE',font=font(12),fill=(114,229,160))
-q.text((12,252),'AI experiments and testing',font=font(10),fill=(210,217,230))
+q.text((12,252),'Server and services testing',font=font(10),fill=(210,217,230))
 q.rectangle((0,297,240,320),fill=(20,32,44))
 q.text((8,304),'GREEN: Wake  BLUE: Stop',font=font(10),fill=(125,220,228))
-img.resize((480,640)).save(OUT/'display_heather_example.png')
+img.resize((480,640)).save(OUT/'display_zoey_example.png')
 # overview wiring diagram SVG cards: authoritative listed net map, NOT deceptive wire paths.
 s=svgwrite.Drawing(str(ROOT/'schematics'/'wiring_overview.svg'),size=('1440px','1010px'),viewBox='0 0 1440 1010')
 s.add(s.rect(insert=(0,0),size=('1440px','1010px'),fill='#0b1520'))

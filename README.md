@@ -34,7 +34,7 @@ This version adds an **external battery tray** and **screw-on ventilated door** 
 - **microSD:** cached directory and character images; BLE-updated registry is saved to card.
 - **Python GUI:** neutral project title, portraits, editable computer info, TCP status probes, BLE sync, guarded Wake-on-LAN and SSH shutdown.
 
-![ST7789V details screen](previews/display_heather_example.png)
+![ST7789V details screen](previews/display_zoey_example.png)
 
 ## Get started
 
@@ -173,7 +173,7 @@ Computer_Directory_Console_v1/
 ├── previews/
 │   ├── enclosure_front_preview.png
 │   ├── python_gui_preview.png
-│   ├── display_heather_example.png
+│   ├── display_zoey_example.png
 │   └── wiring_overview.png
 └── tests/test_project.py
 ```
