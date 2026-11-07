@@ -1,0 +1,19 @@
+item,quantity,required,notes
+ESP32-WROOM-32 DevKit,1,yes,Verify GPIO labels and available pins
+ST7789V 2.0 inch 240x320 display,1,yes,"8-pin VCC GND DIN CLK CS DC RST BL; verify BL and VCC"
+16x2 LCD I2C backpack,1,yes,Verify logic voltage and I2C address
+MicroSD SPI breakout 3.3V-compatible,1,yes,True 3.3V logic support
+MicroSD card 1 GB,1,yes,FAT16/FAT32 support; images at root
+2-axis analog joystick,1,yes,VRx VRy; do not connect SW
+Red square normally open button,1,yes,POWER; deep sleep/wake
+Yellow square normally open button,1,yes,BACK
+Green square normally open button,1,yes,PRESS
+Blue square normally open button,1,yes,STOP request; not physical safety stop
+Passive piezo buzzer low-current,1,yes,3.3V GPIO-compatible or add driver
+Breadboard and jumper wires,as needed,yes,Test before soldering
+USB 5V power supply and cable,1,yes,Size for actual total current
+I2C bidirectional logic level shifter,1,conditional,Required if LCD backpack uses 5V I2C pullups
+10k resistor,1,optional,External RTC pullup for POWER wake if needed
+Power latch controller module,1,future,Needed for actual power disconnection from RED momentary switch
+M3 case screws,4,yes,Check pilot fit
+Mounting clips or tape,as needed,yes,Generic component fit pending measured dimensions

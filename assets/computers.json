@@ -1,0 +1,7 @@
+[
+ {"name":"Heather-PC1","role":"AI","host":"192.168.2.101","mac":"","avatar":"heather.bmp","status":"UNKNOWN","notes":"AI experiments and model testing","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
+ {"name":"Lindsay-PC2","role":"NAS","host":"192.168.2.102","mac":"","avatar":"lindsay.bmp","status":"UNKNOWN","notes":"Network storage and backups","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
+ {"name":"Zoey-PC3","role":"SERVER","host":"192.168.2.103","mac":"","avatar":"zoey.bmp","status":"UNKNOWN","notes":"General application server","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
+ {"name":"Gwen-PC4","role":"WORKSTATION","host":"192.168.2.104","mac":"","avatar":"gwen.bmp","status":"UNKNOWN","notes":"Development workstation","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
+ {"name":"Courtney-PC5","role":"LAB","host":"192.168.2.105","mac":"","avatar":"courtney.bmp","status":"UNKNOWN","notes":"Electronics laboratory computer","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"}
+]

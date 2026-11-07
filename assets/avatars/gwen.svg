@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 160 160">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6972b7"/><stop offset="1" stop-color="#24263f"/></linearGradient></defs>
+<rect width="160" height="160" rx="15" fill="url(#g)"/>
+<circle cx="131" cy="32" r="30" fill="#fff" opacity=".11"/>
+<path d="M7 150 Q17 112 53 108 L107 108 Q143 112 152 150Z" fill="#3196a6"/>
+<path d="M35 60 Q30 11 75 13 Q119 14 118 66 L117 123 L34 123Z" fill="#222834"/>
+<path d="M63 98 L63 113 Q80 130 97 113 L97 98Z" fill="#e8c9bd"/>
+<ellipse cx="80" cy="65" rx="35" ry="45" fill="#e8c9bd"/>
+<path d="M42 54 Q33 21 75 17 Q106 15 110 52 Q96 43 89 29 Q82 51 56 43 Q48 48 42 54Z" fill="#222834"/>
+<path d="M55 65 Q64 60 71 66 M89 66 Q97 60 106 65" fill="none" stroke="#3e3034" stroke-width="2.2" stroke-linecap="round"/>
+<circle cx="64" cy="67" r="2.4" fill="#252735"/><circle cx="97" cy="67" r="2.4" fill="#252735"/>
+<path d="M75 82 Q81 85 86 82" fill="none" stroke="#a8756f" stroke-width="1.8"/>
+<path d="M67 93 Q80 100 93 93" fill="none" stroke="#9a4b5b" stroke-width="2.5" stroke-linecap="round"/>
+<rect x="7" y="130" rx="6" width="146" height="25" fill="#101929" opacity=".84"/>
+<text x="80" y="148" font-family="DejaVu Sans,Arial" font-size="15" font-weight="bold" fill="white" text-anchor="middle">Gwen</text>
+</svg>
