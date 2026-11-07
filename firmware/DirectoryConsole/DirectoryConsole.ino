@@ -3,6 +3,7 @@
   ESP32-WROOM-32 DevKit, ST7789V 240x320, I2C 1602, microSD, BLE, joystick.
   Only square buttons are used. Joystick SW is NOT used.
   POWER = deep sleep / RTC wake, NOT an electrical power disconnect.
+  LCD backlight is switched off in deep sleep; TFT BL wired to 3.3V stays on.
   STOP = password-protected remote shutdown REQUEST, NOT a safety E-stop.
   Real commands require Python manager armed + explicit GUI confirmation.
   Install Arduino libraries: Adafruit GFX, Adafruit ST7735 and ST7789,
@@ -44,7 +45,7 @@
 const bool INVERT_X = false;
 const bool INVERT_Y = false;
 const int JOY_THRESHOLD = 1050;
-const char* TEST_PASSWORD = "1234"; // PUBLIC TEST VALUE ONLY, NOT SECURITY.
+const char* TEST_PASSWORD = "1912"; // PUBLIC TEST VALUE ONLY, NOT SECURITY.
 const char* SERVICE_UUID = "f23a0001-6cf8-4c4c-a3f2-120c95e7ca13";
 const char* RX_UUID = "f23a0002-6cf8-4c4c-a3f2-120c95e7ca13";
 const char* TX_UUID = "f23a0003-6cf8-4c4c-a3f2-120c95e7ca13";
@@ -58,7 +59,7 @@ bool sdReady=false;
 struct Computer {
   String name,role,host,mac,avatar,status,notes;
 };
-const int MAX_PC=12;
+const int MAX_PC=128;
 Computer computers[MAX_PC];
 int countPC=0;
 int selected=0;
@@ -402,7 +403,11 @@ void handleJoy(int dir){
 }
 void enterSleep(){
   lcdLines("POWER SAVING","PRESS TO WAKE");
-  tft.fillScreen(ST77XX_BLACK);
+  delay(250); // Let the user see sleep acknowledgment briefly.
+  lcd.noBacklight(); // Extinguish the 1602 backlight (if backpack supports it).
+  lcd.noDisplay();
+  tft.fillScreen(ST77XX_BLACK); // Does NOT shut off a hard-wired TFT BL.
+  delay(30);
   noTone(PIEZO);
   // Wait until the POWER button is RELEASED, otherwise the low level
   // would immediately wake the device as soon as it entered sleep.

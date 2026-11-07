@@ -1,6 +1,10 @@
 # Computer Directory Console
 
-**Prototype v0.3 (5 V battery-bay revision)** · ESP32 + ST7789V 240×320 + 16×2 I²C LCD + joystick + 4 square buttons + piezo + microSD + Bluetooth LE + Python desktop GUI.
+**Prototype v0.4 (image-import / GUI / microSD workflow; includes v0.3 5 V battery-bay revision)** · ESP32 + ST7789V 240×320 + 16×2 I²C LCD + joystick + 4 square buttons + piezo + microSD + Bluetooth LE + Python desktop GUI.
+
+## New in v0.4: image import + microSD export
+
+Open the Python desktop GUI and use **Choose / replace portrait** to import your own JPG/PNG/WEBP/BMP picture. The GUI now creates a desktop PNG and an ESP32-readable **120×120 uncompressed 24-bit BMP**. Use **Export microSD files** to generate the exact card-root files from the saved GUI records. The `sd_card/` directory is also prebuilt with the five sample portraits. Image data **never transfers over BLE**; copy BMP files to the physical microSD. See [`docs/QUICKSTART_GUI_PORTRAITS_SD.md`](docs/QUICKSTART_GUI_PORTRAITS_SD.md) for exact steps and true power-button options.
 
 ## New in v0.3: removable rear 5 V battery compartment
 
@@ -37,14 +41,14 @@ This version adds an **external battery tray** and **screw-on ventilated door** 
 ### 1. Desktop GUI without hardware
 
 ```bash
-cd Computer_Directory_Console_v1
+cd Computer_Directory_Console_v04_Images_GUI_SD
 python -m pip install -r python_gui/requirements.txt
 python python_gui/console_manager.py
 ```
 
 Works as an offline directory manager without an ESP32. On Linux also install the system **Tk** package and enable Bluetooth service if using BLE. Python 3.10+ recommended. On Windows, use `py -m pip install -r python_gui/requirements.txt` and `py python_gui/console_manager.py`.
 
-Choose a computer, edit its details, and press **Save changes**. The data lives in `assets/computers.json`. Click **Connect Bluetooth** only after the ESP32 firmware is flashed. `Push all to ESP32` transfers the records over BLE.
+Choose a computer, edit its details, and press **Save changes**. The data lives in `assets/computers.json`. Click **Choose / replace portrait** to import a custom picture. Click **Export microSD files** to create updated files for the physical card. Click **Connect Bluetooth** only after the ESP32 firmware is flashed. `Push all to ESP32` transfers the records over BLE.
 
 The supplied LAN addresses are examples, not your actual machines. Blank MAC and SSH fields intentionally prevent working power commands until configured. **Real remote power operations are DISARMED on every GUI launch** and require a second GUI confirmation even when requested by the ESP32.
 
@@ -107,7 +111,7 @@ For details and print settings: [`docs/FUSION_AND_PRINTING.md`](docs/FUSION_AND_
 
 TFT, 3.3 V-compatible SD adapter and joystick use **3.3 V logic**; all grounds join. TFT `BL` depends on the actual breakout and is **deliberately unspecified** until you check its rating. A common 16×2 I²C backpack often runs at **5 V** and pulls SDA/SCL to 5 V; this requires an **I²C level shifter** to protect the ESP32, unless you have confirmed a 3.3 V-compatible module. Do **not** plug 5 V signals directly into ESP32 GPIO.
 
-**POWER vs STOP distinction:** Red POWER enters ESP32 deep sleep after a long press and wakes via its RTC-capable GPIO. It does **not** electrically cut power. A true momentary soft-latch power switch requires additional hardware. Blue STOP is a **password-protected, remote graceful shutdown request**, not an industrial emergency-stop or physical disconnect.
+**POWER vs STOP distinction:** Red POWER enters ESP32 deep sleep after a long press and wakes via its RTC-capable GPIO; the LCD backlight is requested off before sleeping, while TFT BL hardwired to 3.3V remains illuminated. It does **not** electrically cut power. A true momentary soft-latch power switch requires additional hardware. Blue STOP is a **password-protected, remote graceful shutdown request**, not an industrial emergency-stop or physical disconnect.
 
 ## On-device controls
 

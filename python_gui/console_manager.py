@@ -9,11 +9,12 @@ import threading
 import time
 import tkinter as tk
 from pathlib import Path
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 
 from PIL import Image,ImageTk
 from ble_link import BLELink
 from remote import wake_on_lan, shutdown_over_ssh, probe_tcp
+from media_tools import import_portrait, export_sd_card, avatar_filename
 
 ROOT=Path(__file__).resolve().parents[1]
 REGISTRY=ROOT/'assets'/'computers.json'
@@ -69,6 +70,7 @@ class ConsoleGUI:
         ttk.Label(toolbar,text='  // NETWORK CONTROL CONSOLE',foreground='#728398').pack(side='left')
         ttk.Button(toolbar,text='Connect Bluetooth',command=self.ble.connect).pack(side='right',padx=4)
         ttk.Button(toolbar,text='Push all to ESP32',command=self.push_all).pack(side='right',padx=4)
+        ttk.Button(toolbar,text='Export microSD files',command=self.export_sd).pack(side='right',padx=4)
         self.link=ttk.Label(toolbar,text='BLE disconnected',foreground='#bd4242');self.link.pack(side='right',padx=8)
 
         top=ttk.Panedwindow(self.root,orient='horizontal');top.pack(fill='both',expand=True,padx=12,pady=4)
@@ -93,6 +95,7 @@ class ConsoleGUI:
 
         ttk.Label(right,text='Selected computer',font=('Arial',14,'bold')).pack(anchor='w',pady=(0,6))
         self.img=ttk.Label(right,text='Placeholder portrait');self.img.pack(anchor='center',pady=5)
+        ttk.Button(right,text='Choose / replace portrait',command=self.choose_portrait).pack(anchor='center',pady=(0,8))
         form=ttk.Frame(right);form.pack(fill='both',expand=True,padx=5)
         self.fields={}
         for i,key in enumerate(COLS):
@@ -138,25 +141,71 @@ class ConsoleGUI:
             self.img.configure(image=self.photo,text='')
         else:self.img.configure(image='',text='Missing portrait: '+avatar)
 
+    def choose_portrait(self):
+        """Import a desktop photo and create both GUI and ESP32 image formats."""
+        filename = filedialog.askopenfilename(
+            title='Choose a portrait',
+            filetypes=[('Image files', '*.png *.jpg *.jpeg *.bmp *.webp *.gif'), ('All files', '*.*')])
+        if not filename:
+            return
+        try:
+            # Use existing 8.3 filename (or a safe per-record fallback).
+            preferred = self.fields['avatar'].get().strip()
+            try:
+                target = avatar_filename(preferred)
+            except ValueError:
+                target = f'pc{self.selected + 1:02}.bmp'
+            import_portrait(filename, target, AVATARS)
+            self.fields['avatar'].delete(0, 'end')
+            self.fields['avatar'].insert(0, target)
+            self.save_current()
+            self.log(f'Portrait converted to {target}. Export to microSD to update TFT image.')
+        except (OSError, ValueError) as exc:
+            messagebox.showerror('Portrait import failed', str(exc))
+
+    def export_sd(self):
+        """Build microSD files in an output folder. Does not format a card."""
+        folder = filedialog.askdirectory(title='Choose a FOLDER for microSD files (card root or staging folder)')
+        if not folder:
+            return
+        try:
+            if not self.save_current():
+                return
+            destination = Path(folder)
+            overwrite = [name for name in ('computers.csv',) if (destination / name).exists()]
+            if overwrite and not messagebox.askyesno(
+                'Overwrite microSD data?',
+                'Existing computers.csv will be replaced with your current saved GUI records. Continue?'):
+                return
+            count, images = export_sd_card(self.records, destination, AVATARS)
+            self.log(f'Exported {count} records and {images} BMP image(s) to {destination}')
+            messagebox.showinfo('microSD files ready',
+                f'Exported computers.csv + {images} BMP image(s) for {count} computer(s).\n'
+                'Copy these files to the ROOT of a FAT16/FAT32 microSD card.\n'
+                'Bluetooth does not transfer images.')
+        except (OSError, ValueError) as exc:
+            messagebox.showerror('microSD export failed', str(exc))
+
     def save_current(self):
         r=self.records[self.selected]
         for key,entry in self.fields.items():
             val=entry.get().strip()
             if key=='probe_port':
                 try:val=int(val)
-                except ValueError:messagebox.showerror('Invalid port','probe_port must be an integer');return
+                except ValueError:messagebox.showerror('Invalid port','probe_port must be an integer');return False
             r[key]=val
         save_records(self.records);self.log('Saved local registry: '+r.get('name',''))
         self.refresh()
+        return True
 
     def push_selected(self):
-        self.save_current()
+        if not self.save_current():return
         try:self.ble.send(sync_message(self.selected,self.records[self.selected]))
         except ValueError as exc:self.log(str(exc))
 
     def push_all(self):
         # Save the currently selected form first.
-        self.save_current()
+        if not self.save_current():return
         for index,r in enumerate(self.records):
             try:self.ble.send(sync_message(index,r))
             except ValueError as exc:self.log(str(exc))
