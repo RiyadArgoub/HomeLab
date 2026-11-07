@@ -15,14 +15,15 @@ class SmokeTests(unittest.TestCase):
         self.assertEqual([x['name'] for x in r],['Heather-PC1','Lindsay-PC2','Zoey-PC3','Gwen-PC4','Courtney-PC5'])
     def test_sync_frame(self):
         s=sync_message(0,load_records()[0]);self.assertTrue(s.startswith('SYNC|0|Heather-PC1|AI|'))
-        self.assertIn('heather.bmp',s)
+        self.assertIn('placeholder.bmp',s)
     def test_safe_pipe_encoding(self):
         self.assertEqual(clean_field('A|B\nC'),'A/ B C'.replace('/ ','/'))
     def test_bmp_assets(self):
-        for slug in ('heather','lindsay','zoey','gwen','courtney'):
-            with Image.open(ROOT/'assets'/'avatars'/f'{slug}.bmp') as im:
-                self.assertEqual(im.size,(120,120))
-                self.assertEqual(im.mode,'RGB')
+        files=sorted(p.name for p in (ROOT/'assets'/'avatars').iterdir())
+        self.assertEqual(files,['placeholder.bmp','placeholder.png','placeholder.svg'])
+        with Image.open(ROOT/'assets'/'avatars'/'placeholder.bmp') as im:
+            self.assertEqual(im.size,(120,120))
+            self.assertEqual(im.mode,'RGB')
     def test_wol_invalid_mac_rejected(self):
         with self.assertRaises(ValueError):wake_on_lan('00:11:22')
     def test_stl_watertight(self):

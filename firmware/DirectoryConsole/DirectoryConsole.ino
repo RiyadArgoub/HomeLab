@@ -8,7 +8,7 @@
   Real commands require Python manager armed + explicit GUI confirmation.
   Install Arduino libraries: Adafruit GFX, Adafruit ST7735 and ST7789,
   LiquidCrystal_I2C, ESP32 Arduino BLE (comes with esp32 board core).
-  microSD card root: /computers.csv + /heather.bmp etc. (24-bit 120x120 BMPs).
+  microSD card root: /computers.csv + /placeholder.bmp (24-bit 120x120 BMPs).
 */
 #include <Arduino.h>
 #include <Wire.h>
@@ -99,7 +99,7 @@ void lcdLines(const String& a,const String& b){
 void defaults(){
   const char* names[]={"Heather-PC1","Lindsay-PC2","Zoey-PC3","Gwen-PC4","Courtney-PC5"};
   const char* roles[]={"AI","NAS","SERVER","WORKSTATION","LAB"};
-  const char* avatars[]={"heather.bmp","lindsay.bmp","zoey.bmp","gwen.bmp","courtney.bmp"};
+  const char* avatars[]={"placeholder.bmp","placeholder.bmp","placeholder.bmp","placeholder.bmp","placeholder.bmp"};
   countPC=5;
   for(int i=0;i<countPC;i++){
     computers[i].name=names[i]; computers[i].role=roles[i];

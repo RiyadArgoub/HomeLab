@@ -8,7 +8,7 @@ Changes:
 - GUI registry accepts up to 128 records.
 - microSD exporter accepts up to 128 records.
 - Push All uses SYNCBEGIN/SYNCEND so the ESP32 writes computers.csv once per batch instead of once per record.
-- Avatar BMP filenames may be up to 31 characters before .bmp, including bridgette1.bmp.
+- Avatar BMP filenames may be up to 31 characters before .bmp, including placeholder.bmp.
 - GUI computer list now has a vertical scrollbar.
 
 Important: flash the included firmware and use the included Python GUI files together because the batch-sync protocol changed.

@@ -4,7 +4,7 @@
 
 ## New in v0.4: image import + microSD export
 
-Open the Python desktop GUI and use **Choose / replace portrait** to import your own JPG/PNG/WEBP/BMP picture. The GUI now creates a desktop PNG and an ESP32-readable **120×120 uncompressed 24-bit BMP**. Use **Export microSD files** to generate the exact card-root files from the saved GUI records. The `sd_card/` directory is also prebuilt with the five sample portraits. Image data **never transfers over BLE**; copy BMP files to the physical microSD. See [`docs/QUICKSTART_GUI_PORTRAITS_SD.md`](docs/QUICKSTART_GUI_PORTRAITS_SD.md) for exact steps and true power-button options.
+Open the Python desktop GUI and use **Choose / replace portrait** to import your own JPG/PNG/WEBP/BMP picture. The GUI now creates a desktop PNG and an ESP32-readable **120×120 uncompressed 24-bit BMP**. Use **Export microSD files** to generate the exact card-root files from the saved GUI records. The `sd_card/` directory is also prebuilt with the neutral placeholder image. Image data **never transfers over BLE**; copy BMP files to the physical microSD. See [`docs/QUICKSTART_GUI_PORTRAITS_SD.md`](docs/QUICKSTART_GUI_PORTRAITS_SD.md) for exact steps and true power-button options.
 
 ## New in v0.3: removable rear 5 V battery compartment
 
@@ -25,14 +25,14 @@ This version adds an **external battery tray** and **screw-on ventilated door** 
 ## Features
 
 - **Five editable test computers:** Heather-PC1 (AI), Lindsay-PC2 (NAS), Zoey-PC3 (SERVER), Gwen-PC4 (WORKSTATION), Courtney-PC5 (LAB).
-- **Original placeholder portraits**, intentionally not official Total Drama Island art, stored as `.png`, editable `.svg`, and **120 × 120, 24-bit `.bmp`** for the ST7789V.
-- **240 × 320 TFT:** scrollable computer directory, character portrait/detail page, shutdown confirmation, numeric password keypad (digits 1–9), selected-versus-all computer action, request status.
+- **Neutral placeholder image** stored as `.png`, editable `.svg`, and **120 × 120, 24-bit `.bmp`** for the ST7789V. No character portraits are bundled.
+- **240 × 320 TFT:** scrollable computer directory, image/detail page, shutdown confirmation, numeric password keypad (digits 1–9), selected-versus-all computer action, request status.
 - **16 × 2 character LCD:** one-line state and selected-computer summary.
 - **Joystick:** four-way selection, **SW push function unused**.
 - **Four square buttons:** RED POWER, YELLOW BACK, GREEN PRESS, BLUE STOP.
 - **Passive piezo:** navigation, invalid-action, error, success and confirmation sounds.
 - **microSD:** cached directory and character images; BLE-updated registry is saved to card.
-- **Python GUI:** neutral project title, portraits, editable computer info, TCP status probes, BLE sync, guarded Wake-on-LAN and SSH shutdown.
+- **Python GUI:** neutral project title, image placeholders, editable computer info, TCP status probes, BLE sync, guarded Wake-on-LAN and SSH shutdown.
 
 ![ST7789V details screen](previews/display_zoey_example.png)
 
@@ -58,11 +58,7 @@ Format the 1 GB card as FAT16/FAT32 where supported. Copy these files **directly
 
 ```
 /computers.csv
-/heather.bmp
-/lindsay.bmp
-/zoey.bmp
-/gwen.bmp
-/courtney.bmp
+/placeholder.bmp
 ```
 
 Use the contents of `assets/computers.csv` and `assets/avatars/*.bmp`. The BMP files are 24-bit uncompressed, 120×120 pixels. Replacements must use the same size/format or the firmware BMP decoder must be updated.
@@ -153,7 +149,7 @@ Computer_Directory_Console_v1/
 │   ├── computers.csv
 │   ├── computers.json
 │   ├── make_avatars.py
-│   └── avatars/{heather,lindsay,zoey,gwen,courtney}.{svg,png,bmp}
+│   └── avatars/placeholder.{svg,png,bmp}
 ├── cad/
 │   ├── Console_Assembly.step
 │   ├── front_panel.step
@@ -180,14 +176,14 @@ Computer_Directory_Console_v1/
 
 ## Placeholder assets
 
-The five character names, portraits, computer names, roles, example addresses, and descriptions are placeholder/demo content used for testing the interface. Replace network values before real deployment. Do not commit real MAC addresses, SSH usernames, private keys, passwords, or security tokens. No license is implicitly granted by this bundle; add an appropriate license before public distribution.
+The character-based computer names, roles, example addresses, and descriptions are placeholder/demo content used for testing the interface. Only a generic non-human placeholder image is bundled. Replace network values before real deployment. Do not commit real MAC addresses, SSH usernames, private keys, passwords, or security tokens. No license is implicitly granted by this bundle; add an appropriate license before public distribution.
 
 ## Build milestone order
 
 1. Prove TFT and 1602 I²C LCD independently (including I²C voltage safety).
 2. Prove microSD reads one BMP on the TFT.
 3. Wire joystick, four buttons and piezo; test each with Serial Monitor.
-4. Flash combined firmware; verify directory, portraits, keypad and console STOP request **with manager unarmed**.
+4. Flash combined firmware; verify directory, placeholder image, keypad and console STOP request **with manager unarmed**.
 5. Start GUI offline; edit data and save; test BLE connection and sync.
 6. Configure harmless TCP status probes and a single test Wake-on-LAN target.
 7. Configure a noncritical lab host for SSH shutdown; test only with authorization and GUI confirmation.

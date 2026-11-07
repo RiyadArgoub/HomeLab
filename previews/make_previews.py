@@ -20,7 +20,7 @@ for x in (8,134):
 cx,cy=p(71,166);ww,hh=36*S,44*S
 box=[int(cx-ww/2),int(cy-hh/2),int(cx+ww/2),int(cy+hh/2)]
 d.rounded_rectangle([box[0]-8,box[1]-8,box[2]+8,box[3]+8],radius=8,fill=(12,14,24))
-photo=Image.open(ROOT/'assets/avatars/zoey.png').convert('RGB').resize((ww,hh))
+photo=Image.open(ROOT/'assets/avatars/placeholder.png').convert('RGB').resize((ww,hh))
 im.paste(photo,(box[0],box[1]));d.rectangle(box,outline=(118,207,204),width=3)
 # 1602 character display
 cx,cy=p(71,118);ww,hh=66*S,17*S
@@ -52,7 +52,7 @@ im.save(OUT/'enclosure_front_preview.png')
 img=Image.new('RGB',(240,320),(9,14,22));q=ImageDraw.Draw(img)
 q.rectangle((0,0,240,30),fill=(18,53,68))
 q.text((10,7),'COMPUTER INFO',font=font(17,True),fill='white')
-ph=Image.open(ROOT/'assets/avatars/zoey.png').convert('RGB').resize((120,120))
+ph=Image.open(ROOT/'assets/avatars/placeholder.png').convert('RGB').resize((120,120))
 img.paste(ph,(60,38))
 q.text((12,172),'Zoey-PC3',font=font(17,True),fill='white')
 q.text((12,203),'ROLE: SERVER',font=font(12),fill=(161,211,225))

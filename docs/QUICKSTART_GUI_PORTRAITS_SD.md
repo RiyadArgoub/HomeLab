@@ -37,8 +37,7 @@ Notes, etc. Click **Save changes**. This writes `assets/computers.json` on the P
 The image is **center-cropped to a square**, not stretched. The old `.svg`
 original artwork is not updated by custom photo imports.
 
-The **avatar** field should contain a short filename, e.g. `heather.bmp`,
-`lindsay.bmp`, or `pc01.bmp`. The TFT firmware expects simple 8.3-compatible
+The **avatar** field should contain a short filename, e.g. `placeholder.bmp` or `pc01.bmp`. The TFT firmware expects simple 8.3-compatible
 filenames, max eight letters/digits/underscores before `.bmp`.
 
 ## 2. Prepare the 1 GB microSD
@@ -59,15 +58,10 @@ Expected card layout:
 ```
 / (root)
   computers.csv
-  heather.bmp
-  lindsay.bmp
-  zoey.bmp
-  gwen.bmp
-  courtney.bmp
+  placeholder.bmp
 ```
 
-The supplied portraits are about 43,254 bytes each, so all five total only
-about 216 KB. **1 GB is far more than sufficient.** The ESP32 program supports
+The supplied generic placeholder is small, so a 1 GB card has ample space. **1 GB is far more than sufficient.** The ESP32 program supports
 up to 12 registry entries, though the current screen draws only 9 directory
 rows. The SD card is not a log drive; status updates are held in RAM and records
 are saved on BLE sync events. **Avoid removing the card during a write.**

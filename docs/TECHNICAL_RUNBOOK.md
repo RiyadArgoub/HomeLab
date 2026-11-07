@@ -67,11 +67,7 @@ Card root must have:
 
 ```
 /computers.csv
-/heather.bmp
-/lindsay.bmp
-/zoey.bmp
-/gwen.bmp
-/courtney.bmp
+/placeholder.bmp
 ```
 
 CSV format is **pipe-separated** (not comma-separated):
@@ -122,7 +118,7 @@ Messages are UTF-8 ASCII-friendly **newline-delimited** frames, split into BLE c
 | Direction | Example | Description |
 | --- | --- | --- |
 | GUI → ESP32 | `PING` | ESP32 replies `HELLO` |
-| GUI → ESP32 | `SYNC|0|Heather-PC1|AI|192.168.2.101||heather.bmp|UNKNOWN|Test computer` | Replace a cached record; saved to SD |
+| GUI → ESP32 | `SYNC|0|Heather-PC1|AI|192.168.2.101||placeholder.bmp|UNKNOWN|Test computer` | Replace a cached record; saved to SD |
 | GUI → ESP32 | `STATE|0|ONLINE` | Update the display's live status; not persisted as ONLINE |
 | ESP32 → GUI | `REQ|0|WAKE` | Request Wake-on-LAN for selected record |
 | ESP32 → GUI | `REQ|ALL|STOP` | Request graceful shutdown for all, GUI approval required |

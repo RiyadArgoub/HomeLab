@@ -17,7 +17,7 @@ MAX_FIRMWARE_PCS = 128
 def avatar_filename(value):
     filename = str(value or '').strip()
     if Path(filename).name != filename or not SD_FILENAME.fullmatch(filename):
-        raise ValueError('Avatar filename must be a simple BMP filename (letters, numbers, _ or -, up to 31 characters), such as heather1.bmp')
+        raise ValueError('Avatar filename must be a simple BMP filename (letters, numbers, _ or -, up to 31 characters), such as placeholder.bmp')
     return filename.lower()
 
 

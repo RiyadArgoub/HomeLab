@@ -1,7 +1,155 @@
 [
- {"name":"Heather-PC1","role":"AI","host":"192.168.2.101","mac":"","avatar":"heather.bmp","status":"UNKNOWN","notes":"AI experiments and model testing","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
- {"name":"Lindsay-PC2","role":"NAS","host":"192.168.2.102","mac":"","avatar":"lindsay.bmp","status":"UNKNOWN","notes":"Network storage and backups","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
- {"name":"Zoey-PC3","role":"SERVER","host":"192.168.2.103","mac":"","avatar":"zoey.bmp","status":"UNKNOWN","notes":"General application server","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
- {"name":"Gwen-PC4","role":"WORKSTATION","host":"192.168.2.104","mac":"","avatar":"gwen.bmp","status":"UNKNOWN","notes":"Development workstation","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"},
- {"name":"Courtney-PC5","role":"LAB","host":"192.168.2.105","mac":"","avatar":"courtney.bmp","status":"UNKNOWN","notes":"Electronics laboratory computer","probe_port":22,"ssh_user":"","ssh_key":"","platform":"linux"}
+  {
+    "name": "Heather1-PC1",
+    "role": "SERVER",
+    "host": "192.168.2.101",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "AI experiments and model testing"
+  },
+  {
+    "name": "Zoey1-PC2",
+    "role": "NAS",
+    "host": "192.168.2.102",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Network storage and backups"
+  },
+  {
+    "name": "Lindsay-PC3",
+    "role": "SERVER",
+    "host": "192.168.2.103",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "General application server"
+  },
+  {
+    "name": "Bridgette1-PC4",
+    "role": "WORKSTATION",
+    "host": "192.168.2.104",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Development workstation"
+  },
+  {
+    "name": "AmySamey-PC5",
+    "role": "LAB",
+    "host": "192.168.2.105",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Electronics laboratory computer"
+  },
+  {
+    "name": "Courtney-PC6",
+    "role": "AI",
+    "host": "192.168.2.101",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "AI experiments and model testing"
+  },
+  {
+    "name": "Dakota1-PC7",
+    "role": "NAS",
+    "host": "192.168.2.102",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Network storage and backups"
+  },
+  {
+    "name": "Gwen-PC8",
+    "role": "SERVER",
+    "host": "192.168.2.103",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "General application server"
+  },
+  {
+    "name": "Sky2-PC9",
+    "role": "WORKSTATION",
+    "host": "192.168.2.104",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Development workstation"
+  },
+  {
+    "name": "Zoey2-PC10",
+    "role": "LAB",
+    "host": "192.168.2.105",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Electronics laboratory computer"
+  },
+  {
+    "name": "Dakota2-PC11",
+    "role": "AI",
+    "host": "192.168.2.101",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "AI experiments and model testing"
+  },
+  {
+    "name": "Bridgette2-PC12",
+    "role": "NAS",
+    "host": "192.168.2.102",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Network storage and backups"
+  },
+  {
+    "name": "Sky1-PC13",
+    "role": "SERVER",
+    "host": "192.168.2.103",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "General application server"
+  },
+  {
+    "name": "Julia-PC14",
+    "role": "WORKSTATION",
+    "host": "192.168.2.104",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Development workstation"
+  },
+  {
+    "name": "Kelly-PC15",
+    "role": "LAB",
+    "host": "192.168.2.105",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Electronics laboratory computer"
+  },
+  {
+    "name": "Sky3-PC16",
+    "role": "WORKSTATION",
+    "host": "192.168.2.104",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Development workstation"
+  },
+  {
+    "name": "Heather2-PC17",
+    "role": "LAB",
+    "host": "192.168.2.105",
+    "mac": "",
+    "avatar": "placeholder.bmp",
+    "status": "UNKNOWN",
+    "notes": "Electronics laboratory computer"
+  }
 ]

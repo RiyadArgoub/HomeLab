@@ -1,5 +1,17 @@
-Heather-PC1|AI|192.168.2.101|00:00:00:00:00:01|heather.bmp|UNKNOWN|AI experiments and model testing
-Lindsay-PC2|NAS|192.168.2.102|00:00:00:00:00:02|lindsay.bmp|UNKNOWN|Network storage and backups
-Zoey-PC3|SERVER|192.168.2.103|00:00:00:00:00:03|zoey.bmp|UNKNOWN|General application server
-Gwen-PC4|WORKSTATION|192.168.2.104|00:00:00:00:00:04|gwen.bmp|UNKNOWN|Development workstation
-Courtney-PC5|LAB|192.168.2.105|00:00:00:00:00:05|courtney.bmp|UNKNOWN|Electronics laboratory computer
+Heather1-PC1|SERVER|192.168.2.101||placeholder.bmp|UNKNOWN|AI experiments and model testing
+Zoey1-PC2|NAS|192.168.2.102||placeholder.bmp|UNKNOWN|Network storage and backups
+Lindsay-PC3|SERVER|192.168.2.103||placeholder.bmp|UNKNOWN|General application server
+Bridgette1-PC4|WORKSTATION|192.168.2.104||placeholder.bmp|UNKNOWN|Development workstation
+AmySamey-PC5|LAB|192.168.2.105||placeholder.bmp|UNKNOWN|Electronics laboratory computer
+Courtney-PC6|AI|192.168.2.101||placeholder.bmp|UNKNOWN|AI experiments and model testing
+Dakota1-PC7|NAS|192.168.2.102||placeholder.bmp|UNKNOWN|Network storage and backups
+Gwen-PC8|SERVER|192.168.2.103||placeholder.bmp|UNKNOWN|General application server
+Sky2-PC9|WORKSTATION|192.168.2.104||placeholder.bmp|UNKNOWN|Development workstation
+Zoey2-PC10|LAB|192.168.2.105||placeholder.bmp|UNKNOWN|Electronics laboratory computer
+Dakota2-PC11|AI|192.168.2.101||placeholder.bmp|UNKNOWN|AI experiments and model testing
+Bridgette2-PC12|NAS|192.168.2.102||placeholder.bmp|UNKNOWN|Network storage and backups
+Sky1-PC13|SERVER|192.168.2.103||placeholder.bmp|UNKNOWN|General application server
+Julia-PC14|WORKSTATION|192.168.2.104||placeholder.bmp|UNKNOWN|Development workstation
+Kelly-PC15|LAB|192.168.2.105||placeholder.bmp|UNKNOWN|Electronics laboratory computer
+Sky3-PC16|WORKSTATION|192.168.2.104||placeholder.bmp|UNKNOWN|Development workstation
+Heather2-PC17|LAB|192.168.2.105||placeholder.bmp|UNKNOWN|Electronics laboratory computer

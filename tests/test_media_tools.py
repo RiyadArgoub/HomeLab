@@ -40,7 +40,7 @@ class MediaTests(unittest.TestCase):
         records=json.loads((ROOT/'assets'/'computers.json').read_text())
         with tempfile.TemporaryDirectory() as target:
             count, images=export_sd_card(records, target, ROOT/'assets'/'avatars')
-            self.assertEqual((count,images),(5,5))
-            self.assertEqual(len(list(Path(target).iterdir())),6)
+            self.assertEqual((count,images),(17,1))
+            self.assertEqual(len(list(Path(target).iterdir())),2)
 
 if __name__=='__main__':unittest.main()
