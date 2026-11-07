@@ -32,7 +32,7 @@ class MediaTests(unittest.TestCase):
             self.assertFalse((home/'sdcard'/'pc01.png').exists())
 
     def test_invalid_file_path_rejected(self):
-        for bad in ('../heather.bmp', 'ninetitle.bmp', '/tmp/a.bmp', 'hi.png', ''):
+        for bad in ('../placeholder.bmp', 'this_filename_is_far_too_long_for_the_device_image_field.bmp', '/tmp/a.bmp', 'hi.png', ''):
             with self.subTest(bad=bad):
                 with self.assertRaises(ValueError):avatar_filename(bad)
 

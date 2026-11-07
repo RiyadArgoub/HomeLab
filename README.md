@@ -1,10 +1,14 @@
-# Computer Directory Console
+# HomeLab Computer Directory Console
 
-**Prototype v0.4 (image-import / GUI / microSD workflow; includes v0.3 5 V battery-bay revision)** · ESP32 + ST7789V 240×320 + 16×2 I²C LCD + joystick + 4 square buttons + piezo + microSD + Bluetooth LE + Python desktop GUI.
+**Prototype v0.5 (128-PC directory, streamed microSD images, GUI export workflow; includes v0.3 5 V battery-bay revision)** · ESP32 + ST7789V 240×320 + 16×2 I²C LCD + joystick + 4 square buttons + piezo + microSD + Bluetooth LE + Python desktop GUI.
 
-## New in v0.4: image import + microSD export
+## Current v0.5: 128-PC directory + streamed microSD images
 
-Open the Python desktop GUI and use **Choose / replace portrait** to import your own JPG/PNG/WEBP/BMP picture. The GUI now creates a desktop PNG and an ESP32-readable **120×120 uncompressed 24-bit BMP**. Use **Export microSD files** to generate the exact card-root files from the saved GUI records. The `sd_card/` directory is also prebuilt with the neutral placeholder image. Image data **never transfers over BLE**; copy BMP files to the physical microSD. See [`docs/QUICKSTART_GUI_PORTRAITS_SD.md`](docs/QUICKSTART_GUI_PORTRAITS_SD.md) for exact steps and true power-button options.
+The current revision supports **up to 128 computer records** in the ESP32 firmware, desktop GUI, and microSD exporter. The repository ships with **17 neutral demo records**, all using the same generic non-human placeholder image. The TFT shows a 9-row scrolling window rather than storing all images in RAM, and batch GUI sync writes `computers.csv` once per transfer. See [`README_128PC_UPGRADE.md`](README_128PC_UPGRADE.md) for the upgrade notes.
+
+## Added in v0.4: image import + microSD export
+
+Open the Python desktop GUI and use **Choose / replace image** to import your own JPG/PNG/WEBP/BMP picture. The GUI now creates a desktop PNG and an ESP32-readable **120×120 uncompressed 24-bit BMP**. Use **Export microSD files** to generate the exact card-root files from the saved GUI records. The `sd_card/` directory is also prebuilt with the neutral placeholder image. Image data **never transfers over BLE**; copy BMP files to the physical microSD. See [`docs/QUICKSTART_GUI_PORTRAITS_SD.md`](docs/QUICKSTART_GUI_PORTRAITS_SD.md) for exact steps and true power-button options.
 
 ## New in v0.3: removable rear 5 V battery compartment
 
@@ -24,14 +28,14 @@ This version adds an **external battery tray** and **screw-on ventilated door** 
 
 ## Features
 
-- **Five editable test computers:** Heather-PC1 (AI), Lindsay-PC2 (NAS), Zoey-PC3 (SERVER), Gwen-PC4 (WORKSTATION), Courtney-PC5 (LAB).
+- **17 editable demo computers**, with firmware/GUI capacity for **up to 128 records**. All bundled records use neutral example network data and the same generic placeholder image.
 - **Neutral placeholder image** stored as `.png`, editable `.svg`, and **120 × 120, 24-bit `.bmp`** for the ST7789V. No character portraits are bundled.
 - **240 × 320 TFT:** scrollable computer directory, image/detail page, shutdown confirmation, numeric password keypad (digits 1–9), selected-versus-all computer action, request status.
 - **16 × 2 character LCD:** one-line state and selected-computer summary.
 - **Joystick:** four-way selection, **SW push function unused**.
 - **Four square buttons:** RED POWER, YELLOW BACK, GREEN PRESS, BLUE STOP.
 - **Passive piezo:** navigation, invalid-action, error, success and confirmation sounds.
-- **microSD:** cached directory and character images; BLE-updated registry is saved to card.
+- **microSD:** cached directory and placeholder/device images; BLE-updated registry is saved to card.
 - **Python GUI:** neutral project title, image placeholders, editable computer info, TCP status probes, BLE sync, guarded Wake-on-LAN and SSH shutdown.
 
 ![ST7789V details screen](previews/display_zoey_example.png)
@@ -41,14 +45,14 @@ This version adds an **external battery tray** and **screw-on ventilated door** 
 ### 1. Desktop GUI without hardware
 
 ```bash
-cd Computer_Directory_Console_v04_Images_GUI_SD
+cd HomeLab
 python -m pip install -r python_gui/requirements.txt
 python python_gui/console_manager.py
 ```
 
 Works as an offline directory manager without an ESP32. On Linux also install the system **Tk** package and enable Bluetooth service if using BLE. Python 3.10+ recommended. On Windows, use `py -m pip install -r python_gui/requirements.txt` and `py python_gui/console_manager.py`.
 
-Choose a computer, edit its details, and press **Save changes**. The data lives in `assets/computers.json`. Click **Choose / replace portrait** to import a custom picture. Click **Export microSD files** to create updated files for the physical card. Click **Connect Bluetooth** only after the ESP32 firmware is flashed. `Push all to ESP32` transfers the records over BLE.
+Choose a computer, edit its details, and press **Save changes**. The data lives in `assets/computers.json`. Click **Choose / replace image** to import a custom picture. Click **Export microSD files** to create updated files for the physical card. Click **Connect Bluetooth** only after the ESP32 firmware is flashed. `Push all to ESP32` transfers the records over BLE.
 
 The supplied LAN addresses are examples, not your actual machines. Blank MAC and SSH fields intentionally prevent working power commands until configured. **Real remote power operations are DISARMED on every GUI launch** and require a second GUI confirmation even when requested by the ESP32.
 
@@ -116,7 +120,7 @@ TFT, 3.3 V-compatible SD adapter and joystick use **3.3 V logic**; all grounds j
 | Red POWER (hold 1.2 s) | ESP32 deep sleep; press again to wake (power remains supplied) |
 | Yellow BACK | Previous menu, or error chirp if already at directory root |
 | Green PRESS | Open computer; request its WAKE on detail screen; choose PIN digit or confirmation |
-| Blue STOP | Confirm request → 1–9 PIN keypad (`1234` test) → Selected PC or ALL → request manager action |
+| Blue STOP | Confirm request → 1–9 PIN keypad (`1234` demo) → Selected PC or ALL → request manager action |
 | Joystick UP / DOWN | Scroll directory, keypad rows, or scope |
 | Joystick LEFT / RIGHT | PIN keypad columns or yes/no confirmation |
 
@@ -133,8 +137,13 @@ After the console sends `REQ|0|WAKE` or `REQ|ALL|STOP`, the **Python desktop man
 ## Repository layout
 
 ```text
-Computer_Directory_Console_v1/
+HomeLab/
 ├── README.md
+├── ROADMAP.md
+├── LICENSE
+├── requirements-dev.txt
+├── .gitignore
+├── .github/workflows/tests.yml
 ├── docs/
 │   ├── TECHNICAL_RUNBOOK.md
 │   ├── FUSION_AND_PRINTING.md
@@ -171,8 +180,20 @@ Computer_Directory_Console_v1/
 │   ├── python_gui_preview.png
 │   ├── display_zoey_example.png
 │   └── wiring_overview.png
-└── tests/test_project.py
+└── tests/
+    ├── test_project.py
+    └── test_media_tools.py
 ```
+
+## Placeholder assets
+
+The computer names, roles, example addresses, and descriptions are placeholder/demo content used for testing the interface. Only a generic non-human placeholder image is bundled. Replace network values before real deployment. Do not commit real MAC addresses, SSH usernames, private keys, passwords, or security tokens. This project is licensed under the Apache License 2.0; see [`LICENSE`](LICENSE).
+
+## Development status and roadmap
+
+Software-side unit tests run in GitHub Actions and cover the registry, image export, protocol framing, schematic parsing, and printable mesh integrity. Physical ESP32/BLE/display integration is still a prototype and must be validated on the target hardware before deployment.
+
+Planned work is tracked in [`ROADMAP.md`](ROADMAP.md). The roadmap contains more than 20 hours of intended engineering work across hardware validation, authenticated BLE, safer remote-control permissions, enclosure fit testing, tests, and documentation.
 
 ## Build milestone order
 
@@ -184,3 +205,5 @@ Computer_Directory_Console_v1/
 6. Configure harmless TCP status probes and a single test Wake-on-LAN target.
 7. Configure a noncritical lab host for SSH shutdown; test only with authorization and GUI confirmation.
 8. Measure exact board/switch dimensions; print first-fit front/rear enclosure, correct CAD as required, then solder and mount.
+
+> **No hardware has been remotely powered, shut down or physically tested by this build package.**

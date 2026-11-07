@@ -1,5 +1,5 @@
 /*
-  Computer Directory Console v0.2 PROTOTYPE
+  Computer Directory Console v0.5 PROTOTYPE
   ESP32-WROOM-32 DevKit, ST7789V 240x320, I2C 1602, microSD, BLE, joystick.
   Only square buttons are used. Joystick SW is NOT used.
   POWER = deep sleep / RTC wake, NOT an electrical power disconnect.
@@ -45,7 +45,7 @@
 const bool INVERT_X = false;
 const bool INVERT_Y = false;
 const int JOY_THRESHOLD = 1050;
-const char* TEST_PASSWORD = "1912"; // PUBLIC TEST VALUE ONLY, NOT SECURITY.
+const char* TEST_PASSWORD = "1234"; // PUBLIC TEST VALUE ONLY, NOT SECURITY.
 const char* SERVICE_UUID = "f23a0001-6cf8-4c4c-a3f2-120c95e7ca13";
 const char* RX_UUID = "f23a0002-6cf8-4c4c-a3f2-120c95e7ca13";
 const char* TX_UUID = "f23a0003-6cf8-4c4c-a3f2-120c95e7ca13";

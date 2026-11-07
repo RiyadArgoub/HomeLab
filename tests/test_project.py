@@ -11,10 +11,15 @@ from remote import wake_on_lan,probe_tcp
 
 class SmokeTests(unittest.TestCase):
     def test_sample_computers(self):
-        r=load_records();self.assertEqual(len(r),5)
-        self.assertEqual([x['name'] for x in r],['Heather-PC1','Lindsay-PC2','Zoey-PC3','Gwen-PC4','Courtney-PC5'])
+        r=load_records();self.assertEqual(len(r),17)
+        self.assertEqual([x['name'] for x in r],[
+            'Heather1-PC1','Zoey1-PC2','Lindsay-PC3','Bridgette1-PC4','AmySamey-PC5',
+            'Courtney-PC6','Dakota1-PC7','Gwen-PC8','Sky2-PC9','Zoey2-PC10',
+            'Dakota2-PC11','Bridgette2-PC12','Sky1-PC13','Julia-PC14','Kelly-PC15',
+            'Sky3-PC16','Heather2-PC17'])
+        self.assertTrue(all(x['avatar']=='placeholder.bmp' for x in r))
     def test_sync_frame(self):
-        s=sync_message(0,load_records()[0]);self.assertTrue(s.startswith('SYNC|0|Heather-PC1|AI|'))
+        s=sync_message(0,load_records()[0]);self.assertTrue(s.startswith('SYNC|0|Heather1-PC1|SERVER|'))
         self.assertIn('placeholder.bmp',s)
     def test_safe_pipe_encoding(self):
         self.assertEqual(clean_field('A|B\nC'),'A/ B C'.replace('/ ','/'))

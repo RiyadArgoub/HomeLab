@@ -98,8 +98,8 @@ class ConsoleGUI:
         ttk.Label(left,text='Unarmed mode simulates Wake/Shutdown. Remote STOP requires final GUI confirmation.',foreground='#855a20',wraplength=600).pack(anchor='w',pady=(2,5))
 
         ttk.Label(right,text='Selected computer',font=('Arial',14,'bold')).pack(anchor='w',pady=(0,6))
-        self.img=ttk.Label(right,text='Placeholder portrait');self.img.pack(anchor='center',pady=5)
-        ttk.Button(right,text='Choose / replace portrait',command=self.choose_portrait).pack(anchor='center',pady=(0,8))
+        self.img=ttk.Label(right,text='Placeholder image');self.img.pack(anchor='center',pady=5)
+        ttk.Button(right,text='Choose / replace image',command=self.choose_portrait).pack(anchor='center',pady=(0,8))
         form=ttk.Frame(right);form.pack(fill='both',expand=True,padx=5)
         self.fields={}
         for i,key in enumerate(COLS):
@@ -113,7 +113,7 @@ class ConsoleGUI:
         self.logtext=tk.Text(logbox,height=7,font=('Consolas',9),state='disabled')
         self.logtext.pack(fill='both',expand=True)
         self.log('Offline editing is ready. Real LAN commands are DISARMED.')
-        self.log('Replace placeholder hosts, MACs, SSH settings and character portraits before deployment.')
+        self.log('Replace placeholder hosts, MACs, SSH settings and demo image settings before deployment.')
 
     def log(self,s):
         self.logtext.configure(state='normal');self.logtext.insert('end',time.strftime('%H:%M:%S')+'  '+s+'\n')
@@ -148,7 +148,7 @@ class ConsoleGUI:
     def choose_portrait(self):
         """Import a desktop photo and create both GUI and ESP32 image formats."""
         filename = filedialog.askopenfilename(
-            title='Choose a portrait',
+            title='Choose an image',
             filetypes=[('Image files', '*.png *.jpg *.jpeg *.bmp *.webp *.gif'), ('All files', '*.*')])
         if not filename:
             return
@@ -163,9 +163,9 @@ class ConsoleGUI:
             self.fields['avatar'].delete(0, 'end')
             self.fields['avatar'].insert(0, target)
             self.save_current()
-            self.log(f'Portrait converted to {target}. Export to microSD to update TFT image.')
+            self.log(f'Image converted to {target}. Export to microSD to update TFT image.')
         except (OSError, ValueError) as exc:
-            messagebox.showerror('Portrait import failed', str(exc))
+            messagebox.showerror('Image import failed', str(exc))
 
     def export_sd(self):
         """Build microSD files in an output folder. Does not format a card."""

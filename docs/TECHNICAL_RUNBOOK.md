@@ -76,7 +76,7 @@ CSV format is **pipe-separated** (not comma-separated):
 name|role|host|mac|avatar.bmp|UNKNOWN|notes
 ```
 
-The firmware parses up to 12 records. Keep text fields short and do not insert pipes or newlines. The desktop manager maintains `assets/computers.json`, while BLE `SYNC` updates the ESP32 microSD copy. On reboot, status is forced to `UNKNOWN` until refreshed: stored `ONLINE` is not trusted.
+The firmware parses up to 128 records. Keep text fields short and do not insert pipes or newlines. The desktop manager maintains `assets/computers.json`, while BLE `SYNC` updates the ESP32 microSD copy. On reboot, status is forced to `UNKNOWN` until refreshed: stored `ONLINE` is not trusted.
 
 BMP requirements: uncompressed **24-bit**, **120 × 120 pixels**; filenames lower-case; place at card root. You can rebuild generic placeholder assets by running `python assets/make_avatars.py`. Provided SVG files can be edited in vector graphics software.
 
@@ -90,7 +90,7 @@ Directory (joystick up/down, PRESS selects)
        └─ STOP  → Confirm NO/YES
                    ├─ NO  → Detail (no action)
                    └─ YES → 3×3 keypad digits 1–9
-                              PIN test: 1 2 3 4
+                              PIN demo: 1 2 3 4
                               └─ Select target:
                                    ├─ Selected computer
                                    └─ ALL registered computers
@@ -162,7 +162,7 @@ Linux default SSH remote command is fixed `sudo -n /usr/bin/systemctl poweroff`.
 - [ ] Verify TFT VCC/BL and LCD backpack logic voltage.
 - [ ] Compile ESP32 sketch with installed exact board and libraries.
 - [ ] Confirm Serial Monitor startup + microSD read.
-- [ ] Confirm each of five `.bmp` images is shown.
+- [ ] Confirm the bundled `placeholder.bmp` displays correctly, then test at least one custom BMP if custom images will be used.
 - [ ] Confirm four buttons + joystick axes via interaction.
 - [ ] Confirm malformed PIN doesn't send shutdown requests.
 - [ ] Confirm BLE disconnect shows offline status.

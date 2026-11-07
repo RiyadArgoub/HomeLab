@@ -1,11 +1,10 @@
-# Console v0.4: Images, Names, GUI and 1 GB microSD
+# Console v0.5: Images, Names, GUI and 1 GB microSD
 
-## What was actually missing?
+## Current image workflow
 
-The v0.3 FULL ZIP did contain five original placeholder portraits under
-`assets/avatars/`. The smaller battery-bay-only folder/ZIP did not have the GUI
-assets. More importantly, portraits never transfer through Bluetooth. The ESP32
-needs a physical microSD card with BMP files in its root directory.
+The public project bundles only one generic non-human placeholder image under
+`assets/avatars/`. Custom device images never transfer through Bluetooth. The ESP32
+needs a physical microSD card with the referenced BMP files in its root directory.
 
 ## 1. Run the GUI
 
@@ -29,7 +28,7 @@ Click on a computer in the left list. On the right, change Name, Role, Host,
 Notes, etc. Click **Save changes**. This writes `assets/computers.json` on the PC.
 `host` entries in the package are DEMO examples, not verified devices.
 
-**Choose / replace portrait** accepts a PNG, JPG, WEBP, GIF or BMP. It makes:
+**Choose / replace image** accepts a PNG, JPG, WEBP, GIF or BMP. It makes:
 
 - `assets/avatars/<name>.png`: PC GUI thumbnail.
 - `assets/avatars/<name>.bmp`: ESP32 120x120 RGB 24-bit uncompressed BMP.
@@ -37,8 +36,7 @@ Notes, etc. Click **Save changes**. This writes `assets/computers.json` on the P
 The image is **center-cropped to a square**, not stretched. The old `.svg`
 original artwork is not updated by custom photo imports.
 
-The **avatar** field should contain a short filename, e.g. `placeholder.bmp` or `pc01.bmp`. The TFT firmware expects simple 8.3-compatible
-filenames, max eight letters/digits/underscores before `.bmp`.
+The **avatar** field should contain a simple `.bmp` filename, e.g. `placeholder.bmp` or `pc01.bmp`. The v0.5 firmware accepts filenames up to 31 characters before `.bmp`; use letters, digits, underscores, and hyphens for portability.
 
 ## 2. Prepare the 1 GB microSD
 
@@ -46,7 +44,7 @@ filenames, max eight letters/digits/underscores before `.bmp`.
    FAT16 or FAT32 (whichever your card formatter supports). Do not use exFAT.
 2. In the GUI click **Export microSD files**. Choose an empty staging folder,
    e.g. `Desktop\Console_SD`. The tool creates `computers.csv` and the named
-   BMP portraits using the **latest saved GUI records**.
+   BMP images using the **latest saved GUI records**.
 3. Copy the generated files directly to the **ROOT** of the microSD card, not
    inside an `assets`, `avatars`, `sd_card`, or `Console_SD` subfolder.
 4. Safely eject, insert into the 3.3V-compatible microSD reader, then reboot
@@ -62,8 +60,8 @@ Expected card layout:
 ```
 
 The supplied generic placeholder is small, so a 1 GB card has ample space. **1 GB is far more than sufficient.** The ESP32 program supports
-up to 12 registry entries, though the current screen draws only 9 directory
-rows. The SD card is not a log drive; status updates are held in RAM and records
+up to **128 registry entries**, while the current screen draws a scrolling 9-row
+window. The SD card is not a log drive; status updates are held in RAM and records
 are saved on BLE sync events. **Avoid removing the card during a write.**
 
 Optional command-line method:
@@ -74,7 +72,7 @@ python tools/prepare_sd.py --output sd_card
 
 The project already contains a prebuilt `sd_card` folder for first boot.
 
-### IMPORTANT: Bluetooth updates text but NOT pictures
+### IMPORTANT: Bluetooth updates text but NOT image files
 
 - GUI **Push selection** or **Push all to ESP32** updates records over BLE;
   firmware saves text to `/computers.csv` on the card.
@@ -90,7 +88,7 @@ The project already contains a prebuilt `sd_card` folder for first boot.
 |---|---|
 | Select row | Open computer information, avatar and form |
 | Save changes | Save edited entries to `assets/computers.json` |
-| Choose / replace portrait | Convert/import image into GUI+ESP32 formats |
+| Choose / replace image | Convert/import image into GUI+ESP32 formats |
 | Export microSD files | Generate root `computers.csv` and `.bmp` files |
 | Connect Bluetooth | Find `DirectoryConsole` and connect over BLE |
 | Push selection | Send current record's TEXT details to ESP32 |
@@ -141,14 +139,14 @@ but would require replacing the existing momentary red button.
 protected, regulated 5V battery supply. A USB power bank may shut itself off at
 low current; check behavior with a latch controller and deep-sleep mode.
 
-None of the above true-OFF latch circuits are included in v0.4; component and
+None of the above true-OFF latch circuits are included in v0.5; component and
 wiring depend on the switch module you select. No hard power switch has been
 built or validated. Avoid powering ESP32 from USB and 5V/VIN simultaneously
 unless your exact board supports it.
 
 ## 5. Debugging
 
-- GUI portrait shows but TFT portrait missing: image was not copied to microSD
+- GUI image shows but TFT image missing: image was not copied to microSD
   ROOT, avatar filename differs, BMP unsupported, SD read/wiring failed.
 - TFT screen still bright after red POWER: BL wired to constant 3.3V remains on.
 - LCD screen still lights: backpack may ignore backlight-off command, check it.
