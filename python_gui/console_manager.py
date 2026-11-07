@@ -24,7 +24,7 @@ ALLOWED_STATUS={'ONLINE','UNKNOWN','UNVERIFIED','OFFLINE','WAKE SENT','SIMULATED
 
 def load_records(path=REGISTRY):
     data=json.loads(Path(path).read_text(encoding='utf-8'))
-    if not isinstance(data,list) or len(data)>20:raise ValueError('Expect list of <=20 computer records')
+    if not isinstance(data,list) or len(data)>128:raise ValueError('Expect list of <=128 computer records')
     return data
 
 def save_records(records,path=REGISTRY):
@@ -80,7 +80,11 @@ class ConsoleGUI:
         self.tree=ttk.Treeview(left,columns=cols,show='headings',selectmode='browse',height=13)
         for c,w in [('name',175),('role',110),('host',155),('status',115)]:
             self.tree.heading(c,text=c.upper());self.tree.column(c,width=w,stretch=True)
-        self.tree.pack(fill='both',expand=True)
+        treebox=ttk.Frame(left);treebox.pack(fill='both',expand=True)
+        self.tree.pack(in_=treebox,side='left',fill='both',expand=True)
+        tree_scroll=ttk.Scrollbar(treebox,orient='vertical',command=self.tree.yview)
+        tree_scroll.pack(side='right',fill='y')
+        self.tree.configure(yscrollcommand=tree_scroll.set)
         self.tree.bind('<<TreeviewSelect>>',self.select_record)
         row=ttk.Frame(left);row.pack(fill='x',pady=8)
         ttk.Button(row,text='Save changes',command=self.save_current).pack(side='left',padx=3)
@@ -149,7 +153,7 @@ class ConsoleGUI:
         if not filename:
             return
         try:
-            # Use existing 8.3 filename (or a safe per-record fallback).
+            # Use the existing BMP filename (or a safe per-record fallback).
             preferred = self.fields['avatar'].get().strip()
             try:
                 target = avatar_filename(preferred)
@@ -204,12 +208,17 @@ class ConsoleGUI:
         except ValueError as exc:self.log(str(exc))
 
     def push_all(self):
-        # Save the currently selected form first.
+        # Save the currently selected form first, then send one batch.
         if not self.save_current():return
+        if len(self.records)>128:
+            self.log('Too many records: firmware supports up to 128 computers.')
+            return
+        self.ble.send('SYNCBEGIN|'+str(len(self.records)))
         for index,r in enumerate(self.records):
             try:self.ble.send(sync_message(index,r))
             except ValueError as exc:self.log(str(exc))
-        self.log('Queued '+str(len(self.records))+' directory entries over BLE.')
+        self.ble.send('SYNCEND')
+        self.log('Queued '+str(len(self.records))+' directory entries over BLE as one batch.')
 
     def probe_current(self):
         index=self.selected

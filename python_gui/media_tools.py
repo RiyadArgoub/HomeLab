@@ -10,14 +10,14 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 
 ROOT = Path(__file__).resolve().parents[1]
 AVATARS = ROOT / 'assets' / 'avatars'
-SD_FILENAME = re.compile(r'^[A-Za-z0-9_-]{1,8}\.bmp$', re.IGNORECASE)
-MAX_FIRMWARE_PCS = 12
+SD_FILENAME = re.compile(r'^[A-Za-z0-9_-]{1,31}\.bmp$', re.IGNORECASE)
+MAX_FIRMWARE_PCS = 128
 
 
 def avatar_filename(value):
     filename = str(value or '').strip()
     if Path(filename).name != filename or not SD_FILENAME.fullmatch(filename):
-        raise ValueError('Avatar filename must be a simple 8.3-style name such as heather.bmp or pc01.bmp')
+        raise ValueError('Avatar filename must be a simple BMP filename (letters, numbers, _ or -, up to 31 characters), such as heather1.bmp')
     return filename.lower()
 
 
@@ -51,7 +51,7 @@ def export_sd_card(records, output, avatar_dir=AVATARS):
     output = Path(output)
     avatar_dir = Path(avatar_dir)
     if not 1 <= len(records) <= MAX_FIRMWARE_PCS:
-        raise ValueError('Firmware supports between 1 and 12 computer records')
+        raise ValueError('Firmware supports between 1 and 128 computer records')
     lines = []
     avatars = []
     names_seen = set()
