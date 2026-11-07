@@ -1,6 +1,16 @@
 # Computer Directory Console
 
-**Prototype v0.2** · ESP32 + ST7789V 240×320 + 16×2 I²C LCD + joystick + 4 square buttons + piezo + microSD + Bluetooth LE + Python desktop GUI.
+**Prototype v0.3 (5 V battery-bay revision)** · ESP32 + ST7789V 240×320 + 16×2 I²C LCD + joystick + 4 square buttons + piezo + microSD + Bluetooth LE + Python desktop GUI.
+
+## New in v0.3: removable rear 5 V battery compartment
+
+This version adds an **external battery tray** and **screw-on ventilated door** to the original rear case, preserving the existing neutral front panel and all electronic controls. The tray is printed separately to avoid a large unsupported bridge in the rear shell. A generic **regulated 5 V battery/USB power bank** should be **no larger than approximately 100 × 70 × 23 mm**, including required cable clearance. Measure your particular pack before printing.
+
+**New STL print set:** `stl/front_panel.stl` (unchanged), `stl/rear_shell_with_battery_mount.stl`, `stl/battery_tray_5V.stl`, `stl/battery_door_5V.stl`, and four optional `stl/square_button_trim.stl` pieces. Do **not** use the old `stl/rear_shell.stl` for the battery-backed version.
+
+**Fusion import:** `cad/Console_Assembly_with_5V_Battery.step` or the individual STEP models. Source generator: `cad/make_modular_5V_battery_bay.py`. Full mechanical instructions and electrical cautions: [`docs/BATTERY_BAY_PRINT_AND_ASSEMBLY.md`](docs/BATTERY_BAY_PRINT_AND_ASSEMBLY.md).
+
+![Battery tray placement sketch](previews/battery_bay_layout.png)
 
 > **Build status:** First-pass editable 3D CAD models and watertight STL meshes are generated. Python GUI runs locally. ESP32 firmware and an EAGLE/Fusion-compatible module-level schematic are supplied as source. **Not verified on your physical ESP32, display modules, buttons, or PCs.** Verify components and test on a breadboard before soldering or printing the final case.
 

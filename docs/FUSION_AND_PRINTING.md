@@ -1,3 +1,5 @@
+> **v0.3 battery revision:** This page originally described the v0.2 shell. For the current battery-backed build, use `stl/rear_shell_with_battery_mount.stl`, `stl/battery_tray_5V.stl`, and `stl/battery_door_5V.stl` along with the unchanged front and trims. See [BATTERY_BAY_PRINT_AND_ASSEMBLY.md](BATTERY_BAY_PRINT_AND_ASSEMBLY.md). Import `cad/Console_Assembly_with_5V_Battery.step` for the updated Fusion assembly.
+
 # Autodesk Fusion and 3D Printing Guide
 
 ## Deliverable files
